@@ -20,7 +20,7 @@ To be written.
 
 License
 -------
-Tbe Ducttape Editor and its components as well as examples and tests are
+The Ducttape Editor and its components as well as examples and tests are
 available under the LGPL3 license unless noted otherwise.
 
 See the docs/licenses/ directory for individual licenses of our resources.

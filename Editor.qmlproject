@@ -1,0 +1,22 @@
+// Temporary qmlproject file to speed up developement, eventually we'll probably compile it.
+
+import QmlProject 1.1
+
+Project {
+    mainFile: "main.qml"
+
+    // Include .qml, .js, plugins and image files as needed.
+    QmlFiles {
+        directory: "./"
+    }
+    /*
+    JavaScriptFiles {
+        directory: "./"
+    }
+    */
+    ImageFiles {
+        directory: "./images"
+    }
+    // List of plugin directories passed to QML runtime
+    // importPaths: [ "./EditorPlugin" ]
+}
