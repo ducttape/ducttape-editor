@@ -4,10 +4,13 @@ import QtQuick 1.1
 Rectangle {
     property string text
     property string icon
+    property string type
+    property int toggle: 0
     anchors.fill: parent
 
     signal buttonClick()
     onButtonClick: {
         console.log(text + " pressed")
+        toggle= toggle ? 0 : 1
     }
 }

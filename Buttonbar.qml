@@ -34,8 +34,18 @@ Rectangle {
             MouseArea{
                 id:itemMouseArea
                 anchors.fill: parent
-                onClicked: buttonBarModel.children[index].buttonClick()
+                onClicked: {
+                    buttonBarModel.children[index].buttonClick();
+                }
             }
+
+            Rectangle{
+                height: seperatorWidth
+                anchors { left: parent.left; right: parent.right; bottom: parent.bottom; leftMargin: 2; rightMargin: 2; bottomMargin: 2}
+                color: buttonBarModel.children[index].toggle ? "gold" : "#60ffffff"
+                visible: (buttonBarModel.children[index].type==="toggle") ? true : false
+            }
+
             border.color: "darkgrey"
             color: itemMouseArea.pressed ? clicked : regular
         }

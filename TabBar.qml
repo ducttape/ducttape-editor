@@ -10,15 +10,12 @@ Rectangle {
     property int tabWidth: width/tabBarModel.count;
     property int tabIndex: 0;
 
-    signal newTab();
+    signal newTab(int lastindex, int index);
 
-    function tabClicked(index) {
-        console.log("tabIndex " + tabIndex + " index " + index)
+    onNewTab: {
         tabBar.children[tabIndex].color = "transparent"
         tabIndex = index
-        console.log("changed tabIndex to " + tabIndex)
         tabBar.children[tabIndex].color = "#30ffffff"
-        newTab()
     }
 
     Component{
@@ -46,20 +43,23 @@ Rectangle {
             MouseArea{
                 id:itemMouseArea
                 anchors.fill: parent
-                onClicked: {tabClicked(index); tabBarModel.children[index].buttonClick()}
+                onClicked: {newTab(tabIndex, index); tabBarModel.children[index].buttonClick()}
             }
+
+            Rectangle{
+                width: parent.width
+                height: 5
+                anchors.bottom: parent.bottom
+                color: tabIndex===index ? "transparent" : "gold"
+            }
+
             border.color: "darkgrey"
             color: notsel
         }
     }
     Component.onCompleted:
     {
-        tabClicked(tabIndex)
-    }
-
-    Rectangle{
-        height: parent.height / 10; width: parent.width; color: "gold"
-        anchors.bottom: parent.bottom
+        newTab(tabIndex, tabIndex)
     }
 
     Row{

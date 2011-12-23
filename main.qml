@@ -4,7 +4,6 @@ import QtQuick 1.1
 Rectangle {
     id: root
     width: 1000; height: 600
-    color: "lightgrey"
 
     VisualItemModel {
         id:buttonModel
@@ -26,6 +25,11 @@ Rectangle {
         }
         Button{
             text: "open"
+        }
+        Button{
+            id:toggleButton
+            text: toggle ? "on" : "off"
+            type: "toggle"
         }
     }
 
@@ -73,17 +77,16 @@ Rectangle {
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
     TabBar{
-        id: tabbar
+        id: tabBar
         anchors.top: parent.top
         width: parent.width
         height: 50
         tabBarModel: smalltabModel
-        onNewTab: {tabview.newTab()}
     }
 
     Rectangle{
-        id: tabview
-        anchors.top: tabbar.bottom
+        id: tabView
+        anchors.top: tabBar.bottom
         anchors.bottom: parent.bottom
         width: parent.width;
 
@@ -91,12 +94,19 @@ Rectangle {
             model:smalltabModel
         }
 
-        function newTab() {
+        function newTab(lastindex, index) {
+            smalltabModel.children[lastindex].visible = false;
+            smalltabModel.children[index].visible = true;
+        }
+
+        Component.onCompleted: {
             for(var i = 0; i < smalltabModel.children.length; i++) {
                 smalltabModel.children[i].visible = false;
             }
-            smalltabModel.children[tabbar.tabIndex].visible = true;
+            tabBar.newTab.connect(newTab)
+            newTab(0, 0)
         }
     }
     }
+    color: toggleButton.toggle ? "black" : "white"
 }
