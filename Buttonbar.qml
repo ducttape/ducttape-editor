@@ -27,7 +27,7 @@ Rectangle {
 
             Text{
                 anchors.centerIn: parent
-                color:"white"
+                color:(buttonBarModel.children[index].enabled) ? "white" : "grey"
                 text: buttonBarModel.children[index].text
             }
 
@@ -47,7 +47,17 @@ Rectangle {
             }
 
             border.color: "darkgrey"
-            color: itemMouseArea.pressed ? clicked : regular
+            color: {
+                if(buttonBarModel.children[index].enabled) {
+                    if (itemMouseArea.pressed) {
+                        return clicked
+                    } else {
+                        return regular
+                    }
+                } else {
+                    return clicked
+                }
+            }
         }
     }
 

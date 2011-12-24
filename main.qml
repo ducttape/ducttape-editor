@@ -10,6 +10,7 @@ Rectangle {
         Button{
             text: "nothing"
             icon: "images/nothing.png"
+            enabled: false
         }
         Button{
             text: "quit"
@@ -22,13 +23,14 @@ Rectangle {
         id:otherButtons
         Button{
             text: "save"
+            enabled: false
         }
         Button{
             text: "open"
         }
         Button{
             id:toggleButton
-            text: toggle ? "on" : "off"
+            text: toggle ? "lights: on" : "lights: off"
             type: "toggle"
         }
     }
@@ -38,7 +40,7 @@ Rectangle {
         Button{
             text: "1"
             Rectangle{color:"blue"; anchors.fill: parent
-                Text{text: "one"; color: "black"; anchors.centerIn: parent}}
+                Text{text: "one" ; color: "black"; anchors.centerIn: parent}}
         }
         Button{
             text: "2"
@@ -46,7 +48,8 @@ Rectangle {
                 Text{text: "dos"; color: "black"; anchors.centerIn: parent}}
         }
         Button{
-            text: "3"
+            icon: "images/nothing.png"
+            enabled: false
             Rectangle{color:"red"; anchors.fill: parent
                 Text{text:"drei"; color: "black"; anchors.centerIn: parent}}
         }
@@ -60,7 +63,7 @@ Rectangle {
         Buttonbar{
             id:normalButtonToolbar
             height: parent.height
-            width: parent.width/2
+            width: parent.width/2 - slider.width
             buttonBarModel: buttonModel
         }
         Buttonbar{
@@ -69,6 +72,29 @@ Rectangle {
             width: parent.width/2
             buttonBarModel:otherButtons
         }
+        Rectangle{
+            id: slider
+            border.color: "darkgrey"
+            color: "black"
+            width: 200
+            height: parent.height
+
+            Slider{
+                id: sliderItem
+                width: parent.width; height: parent.height / 4;
+                handleThick: 20;
+                maximumValue: 1;
+                stepSize: .2;
+                anchors.bottom: parent.bottom;
+            }
+
+            Text{
+                text: sliderItem.roundedValue;
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top; anchors.topMargin: 10;
+                color: "white"
+            }
+        }
     }
 
     Rectangle{
@@ -76,37 +102,38 @@ Rectangle {
         anchors.left:parent.left
         anchors.top: toolbar.bottom
         anchors.bottom: parent.bottom
-    TabBar{
-        id: tabBar
-        anchors.top: parent.top
-        width: parent.width
-        height: 50
-        tabBarModel: smalltabModel
-    }
-
-    Rectangle{
-        id: tabView
-        anchors.top: tabBar.bottom
-        anchors.bottom: parent.bottom
-        width: parent.width;
-
-        Repeater{
-            model:smalltabModel
+        TabBar{
+            id: tabBar
+            anchors.top: parent.top
+            width: parent.width
+            height: 50
+            tabBarModel: smalltabModel
         }
 
-        function newTab(lastindex, index) {
-            smalltabModel.children[lastindex].visible = false;
-            smalltabModel.children[index].visible = true;
-        }
+        Rectangle{
+            id: tabView
+            anchors.top: tabBar.bottom
+            anchors.bottom: parent.bottom
+            width: parent.width
 
-        Component.onCompleted: {
-            for(var i = 0; i < smalltabModel.children.length; i++) {
-                smalltabModel.children[i].visible = false;
+            Repeater{
+                model:smalltabModel
             }
-            tabBar.newTab.connect(newTab)
-            newTab(0, 0)
+
+            function newTab(lastindex, index) {
+                smalltabModel.children[lastindex].visible = false;
+                smalltabModel.children[index].visible = true;
+            }
+
+            Component.onCompleted: {
+                for(var i = 0; i < smalltabModel.children.length; i++) {
+                    smalltabModel.children[i].visible = false;
+                }
+                tabBar.newTab.connect(newTab)
+                newTab(0, 0)
+            }
         }
     }
-    }
-    color: toggleButton.toggle ? "black" : "white"
+
+    color: toggleButton.toggle ? "white" : "black"
 }

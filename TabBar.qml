@@ -36,21 +36,36 @@ Rectangle {
 
             Text{
                 anchors.centerIn: parent
-                color:"white"
+                color:(tabBarModel.children[index].enabled) ? "white" : "grey"
                 text: tabBarModel.children[index].text
             }
 
             MouseArea{
                 id:itemMouseArea
                 anchors.fill: parent
-                onClicked: {newTab(tabIndex, index); tabBarModel.children[index].buttonClick()}
+                onClicked: {
+                    if(tabBarModel.children[index].enabled) {
+                        newTab(tabIndex, index);
+                    }
+                    tabBarModel.children[index].buttonClick()
+                }
             }
 
             Rectangle{
                 width: parent.width
                 height: 5
                 anchors.bottom: parent.bottom
-                color: tabIndex===index ? "transparent" : "gold"
+                color: {
+                    if(tabBarModel.children[index].enabled) {
+                        if (tabIndex===index) {
+                            return "transparent"
+                        } else {
+                            return "gold"
+                        }
+                    } else {
+                        return "grey"
+                    }
+                }
             }
 
             border.color: "darkgrey"
