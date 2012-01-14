@@ -1,0 +1,1 @@
+In order to build it, you will have to supply the variable DT_DIR to cmake (CMakeLists.txt:36), this is temporary, until I clean up the build dirs.

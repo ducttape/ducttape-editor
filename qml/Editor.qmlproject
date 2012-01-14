@@ -7,7 +7,7 @@ Project {
 
     // Include .qml, .js, plugins and image files as needed.
     QmlFiles {
-        directory: "./"
+        directory: [ '../', './' ]
     }
     /*
     JavaScriptFiles {
@@ -15,7 +15,7 @@ Project {
     }
     */
     ImageFiles {
-        directory: "./images"
+        directory: "../images"
     }
     // List of plugin directories passed to QML runtime
     // importPaths: [ "./EditorPlugin" ]

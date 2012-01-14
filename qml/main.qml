@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import "qml-components"
 
 Rectangle {
     id: root
@@ -9,12 +10,12 @@ Rectangle {
         id:buttonModel
         Button{
             text: "nothing"
-            icon: "images/nothing.png"
+            icon: "../images/nothing.png"
             enabled: false
         }
         Button{
             text: "quit"
-            icon: "images/quit.png"
+            icon: "../images/quit.png"
             onButtonClick: Qt.quit()
         }
     }
@@ -43,12 +44,13 @@ Rectangle {
                 Text{text: "one" ; color: "black"; anchors.centerIn: parent}}
         }
         Button{
-            text: "2"
+            text: "2";
             Rectangle{color:"green"; anchors.fill: parent
-                Text{text: "dos"; color: "black"; anchors.centerIn: parent}}
+                Text{id: txt2; text: "tabSlider"; color: "black"; anchors.centerIn: parent}
+                Text{text: tabslider.value; color: "black"; anchors.top: txt2.bottom; anchors.topMargin: 4; anchors.horizontalCenter: parent.horizontalCenter}}
         }
         Button{
-            icon: "images/nothing.png"
+            icon: "../images/nothing.png"
             enabled: false
             Rectangle{color:"red"; anchors.fill: parent
                 Text{text:"drei"; color: "black"; anchors.centerIn: parent}}
@@ -79,7 +81,7 @@ Rectangle {
             width: 200
             height: parent.height
 
-            Slider{
+            HSlider{
                 id: sliderItem
                 width: parent.width; height: parent.height / 4;
                 handleThick: 20;
@@ -89,7 +91,7 @@ Rectangle {
             }
 
             Text{
-                text: sliderItem.roundedValue;
+                text: sliderItem.value;
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top; anchors.topMargin: 10;
                 color: "white"
@@ -110,11 +112,20 @@ Rectangle {
             tabBarModel: smalltabModel
         }
 
+        VSlider{
+            id:tabslider
+            anchors.top: tabBar.bottom
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            width: 20
+        }
+
         Rectangle{
             id: tabView
             anchors.top: tabBar.bottom
             anchors.bottom: parent.bottom
-            width: parent.width
+            anchors.left: parent.left
+            anchors.right: tabslider.left
 
             Repeater{
                 model:smalltabModel

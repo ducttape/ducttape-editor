@@ -7,9 +7,9 @@ Rectangle {
 
     property int maximumValue: 100;
     property int minimumValue: 0;
+    property real exactValue: 0;
     property real value: 0;
-    property real roundedValue: 0;
-    onValueChanged: updatePos();
+    onExactValueChanged: updatePos();
     property int maxXValue: width - handle.width;
     property int handleThick: 20;
     property real stepSize: 1;
@@ -17,8 +17,8 @@ Rectangle {
 
     function updatePos() {
         if (maximumValue > minimumValue) {
-            var round = Math.round(value/stepSize) * stepSize
-            roundedValue = round
+            var round = Math.round(exactValue/stepSize) * stepSize
+            value = round
             var pos = (round - minimumValue)/(maximumValue - minimumValue) * maxXValue
             handle.x = pos
         } else {
@@ -40,7 +40,7 @@ Rectangle {
             drag {target: parent; axis: Drag.XAxis;
                 minimumX: 0; maximumX: maxXValue;
             }
-            onPositionChanged: value = (maximumValue - minimumValue) * (handle.x / maxXValue)
+            onPositionChanged: exactValue = (maximumValue - minimumValue) * (handle.x / maxXValue)
         }
         border.color: "lightgrey"
         color: handleMouseArea.pressed ? "#444444" : "#333333"
