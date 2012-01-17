@@ -1,8 +1,0 @@
-#ifndef DUCTTAPEEDITORSTATE_HPP
-#define DUCTTAPEEDITORSTATE_HPP
-
-#include <Scene/State.hpp>
-
-
-
-#endif // DUCTTAPEEDITORSTATE_HPP

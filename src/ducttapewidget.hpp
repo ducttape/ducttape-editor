@@ -14,37 +14,38 @@
 #include <QX11Info>
 #endif
 
+#include "ducttapewidgetgame.hpp"
+
 class DucttapeWidget : public QWidget /*QDeclarativeView*/ {
     Q_OBJECT
 public:
-    DucttapeWidget(dt::Game* game, QWidget* parent = 0);
+    DucttapeWidget(GameNonCont* game, QWidget* parent = 0);
     ~DucttapeWidget();
 
     void Run(dt::State* state, int argc, char** argv);
 
-public slots:
-
-    void updateQt(double d);
-
 protected:
-    /*void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e);
     void paintEvent(QPaintEvent *e);
     void timerEvent(QTimerEvent *e);
-    void setRootObject(QObject *obj);
+    /*void setRootObject(QObject *obj);
     bool eventFilter(QObject *watched, QEvent *e);*/
 
 private:
-    dt::Game* mGame;
+    GameNonCont* mGame;
     dt::DisplayManager* mDisplay;
+    QBasicTimer mTimer;
 };
 
+/*
 class DucttapeThread : public QThread {
 public:
-    DucttapeThread(DucttapeWidget* dt, int argc, char** argv);
+    DucttapeThread(int argc, char** argv);
     void run();
 
 private:
-    DucttapeWidget* mDt;
+    DucttapeWidget* mDtWidget;
+    GameNonCont* mDt;
     int mArg;
     char** mArgv;
 };
@@ -53,5 +54,6 @@ class DucttapeThread2 : public QThread {
 public:
     void run();
 };
+*/
 
 #endif // DUCTTAPEWIDGET_HPP

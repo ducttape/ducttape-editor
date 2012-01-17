@@ -4,38 +4,43 @@
 #include <stdio.h>
 
 int main(int argc, char** argv) {
-    QApplication app(argc, argv);
-    /*QDeclarativeView main;
-    main.connect(main.engine(), SIGNAL(quit()), SLOT(close()));
-    main.setResizeMode(QDeclarativeView::SizeRootObjectToView);
-    main.setSource(QUrl::fromLocalFile("../main.qml"));
-    main.show();*/
+    QString qargv(argv[1]);
+    if(argc && qargv == "widget") {
 
-    std::cout << "about to make widget" << std::endl;
+        QApplication app(argc, argv);
+        GameNonCont* game = new GameNonCont;
+        game->Init(new EditorState, argc, argv);
 
-    /*
-     * this creates the QCoreApplication object in the main thread */
-    dt::Game* game = (new dt::Game());
+        QWidget* mainwidget = new QWidget;
+        QPushButton* quit = new QPushButton(mainwidget);
+        quit->setText("quit");
+        QObject::connect(quit, SIGNAL(clicked()), game, SLOT(RequestShutdown()));
+        QObject::connect(quit, SIGNAL(clicked()), qApp, SLOT(quit()));
+        QVBoxLayout* layout = new QVBoxLayout;
+        //QPushButton* widget = new QPushButton;
+        DucttapeWidget* widget = new DucttapeWidget(game, mainwidget);
+        layout->addWidget(widget);
+        layout->addWidget(quit);
+        mainwidget->setLayout(layout);
+        mainwidget->setMinimumSize(800, 600);
+        mainwidget->show();
+        //widget->show();
 
-    DucttapeWidget dtwidget(game);
+        app.exec();
 
-    dtwidget.show();
+        return 0;
 
-    /*
-     * this tries to run the widget as a seperate thread,
-     *  but it's not working right now; you don't have to call
-     *  start, it will run on it's own */
-    DucttapeThread dtthread(&dtwidget, argc, argv);
-    dtthread.start();
+    } else if(qargv == "noncont") {
 
-    app.exec();
-    /*
-     * this doesn't work becaus qtgui has to be started in the main thread.
-    DucttapeThread2 dtthread;
-
-    dtthread.start();
-
-    dtwidget.Run(new EditorState, argc, argv);*/
-
-    return 0;
+        GameNonCont gamen;
+        gamen.Init(new EditorState(), argc, argv);
+        while(gamen.IsRunning()) {
+            gamen.Run();
+        }
+        return 0;
+    } else {
+        dt::Game game;
+        game.Run(new EditorState(), argc, argv);
+        return 0;
+    }
 }

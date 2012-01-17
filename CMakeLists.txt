@@ -33,7 +33,7 @@ set(OgreProcedural_HOME "" CACHE PATH "Path to Ogre Procedural dir")
 set(YAMLCPP_DIR "" CACHE PATH "Path to yaml-cpp dir")
 
 # temp stuff until I figure this whole cmake thing out
-set(DT_DIR "/absolute/path/here" CACHE PATH "Path to ducttape dir")
+set(DT_DIR "/media/dt-usb/ducttape-engine/" CACHE PATH "Path to ducttape dir")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/res/cmake")
 
@@ -74,7 +74,7 @@ if(MSVC) # Sort the odd stuff out
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DNDEBUG") # Odd duplicate symbols with /GL
     set(CMAKE_CXX_FLAGS_DEBUG "/Zi")
 else() # GCC/Mingw
-    set(CMAKE_CXX_FLAGS "-DCOMPILER_GCC -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-but-set-parameter -pedantic -std=c++0x -fvisibility=hidden -fPIC")
+    set(CMAKE_CXX_FLAGS "-DCOMPILER_GCC -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-but-set-parameter -pedantic -std=c++0x -fvisibility=hidden -fPIC -Wl,-R,${DT_DIR}/lib")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -flto -DNDEBUG")
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
 endif()

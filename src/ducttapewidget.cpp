@@ -1,13 +1,13 @@
 #include "ducttapewidget.hpp"
 #include "State.hpp"
 
-DucttapeWidget::DucttapeWidget(dt::Game* game, QWidget* parent) :
+DucttapeWidget::DucttapeWidget(GameNonCont* game, QWidget* parent) :
     QWidget(parent),
     mGame(game),
     mDisplay(nullptr) {
 
-    connect(mGame, SIGNAL(BeginFrame(double)), SLOT(updateQt(double)));
-    connect(qApp, SIGNAL(aboutToQuit()), mGame, SLOT(RequestShutdown()));
+    //connect(mGame, SIGNAL(BeginFrame(double)), SLOT(updateQt(double)));
+    connect(qApp, SIGNAL(aboutToQuit()), mGame, SLOT(RequestShutdown()), Qt::DirectConnection);
 
     mDisplay = dt::Root::GetInstance().GetDisplayManager();
 
@@ -47,40 +47,42 @@ DucttapeWidget::DucttapeWidget(dt::Game* game, QWidget* parent) :
 
     // take over ogre window
     // needed with parent windows
-     if (stealparent)
-    {
+    //if (stealparent) {
+        std::cout << "steal parent" << std::endl;
         WId ogre_winid = 0x0;
-    #ifndef Q_WS_WIN
+    //#ifndef Q_WS_WIN
         win_-> getCustomAttribute ("WINDOW", &ogre_winid);
-    #else
-        win_-> getCustomAttribute ("HWND", &ogre_winid);
-    #endif
-        assert (ogre_winid);
-        create (ogre_winid);
-    }
+    //#else
+        //win_-> getCustomAttribute ("HWND", &ogre_winid);
+    //#endif
+        assert(ogre_winid);
+        create(ogre_winid);
+    //}
+
+    setAttribute( Qt::WA_PaintOnScreen, true );
+    setAttribute( Qt::WA_NoBackground );
+    mTimer.start(2, this);
 }
 
 DucttapeWidget::~DucttapeWidget() {
     delete mGame;
 }
 
-void DucttapeWidget::Run(dt::State *state, int argc, char **argv) {
-    mGame->Run(state, argc, argv);
+void DucttapeWidget::resizeEvent(QResizeEvent *e) {
+    if(mGame) {
+        dt::DisplayManager::Get()->SetWindowSize(width(), height());
+    }
 }
 
-void DucttapeWidget::updateQt(double d) {
-    update();
+void DucttapeWidget::paintEvent(QPaintEvent *e) {
+    if(mGame) {
+        update();
+    }
 }
 
-DucttapeThread::DucttapeThread(DucttapeWidget *dt, int argc, char** argv) :
-    mDt(dt),
-    mArg(argc),
-    mArgv(argv) {}
-
-void DucttapeThread::run() {
-    mDt->Run(new EditorState(), mArg, mArgv);
-}
-
-void DucttapeThread2::run() {
-    qApp->exec();
+void DucttapeWidget::timerEvent(QTimerEvent *e) {
+    if(e->timerId() == mTimer.timerId()) {
+        mGame->Run();
+        update();
+    }
 }
