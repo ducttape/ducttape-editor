@@ -2,6 +2,13 @@
 
 #include <Scene/StateManager.hpp>
 #include <Input/InputManager.hpp>
+
+#include <Logic/ScriptManager.hpp>
+#include <Graphics/TerrainManager.hpp>
+#include <Physics/PhysicsManager.hpp>
+#include <Utils/LogManager.hpp>
+#include <Core/ResourceManager.hpp>
+
 #include <Graphics/DisplayManager.hpp>
 #include <Network/NetworkManager.hpp>
 
@@ -39,7 +46,10 @@ void GameNonCont::Run() {
             return;
 
         // INPUT
-        dt::InputManager::Get()->Capture();
+        //dt::InputManager::Get()->Capture();
+        if(dt::InputManager::Get()){
+            mRoot->GetInputManager()->Deinitialize();
+        }
 
         mAccumulator += frame_time;
         while(mAccumulator >= mFrameTime) {
@@ -70,6 +80,24 @@ void GameNonCont::Run() {
     mIsRunning = false;
     mRoot->Deinitialize();
     }
+}
+
+void GameNonCont::ShutdownNow() {
+    mRoot->GetNetworkManager()->DisconnectAll();
+    mIsRunning = false;
+    mRoot->GetScriptManager()->Deinitialize();
+    mRoot->GetTerrainManager()->Deinitialize();
+    mRoot->GetPhysicsManager()->Deinitialize();
+    mRoot->GetStateManager()->Deinitialize();
+    dt::Logger::Get().Debug("to network manager");
+    mRoot->GetNetworkManager()->Deinitialize();
+    dt::Logger::Get().Debug("to Display");
+    mRoot->GetDisplayManager()->Deinitialize();
+    dt::Logger::Get().Debug("to Resource");
+    mRoot->GetResourceManager()->Deinitialize();
+    dt::Logger::Get().Debug("to me :(");
+    mRoot->GetLogManager()->Deinitialize();
+    dt::Serializer::Deinitialize();
 }
 
 bool GameNonCont::IsShutdown() {

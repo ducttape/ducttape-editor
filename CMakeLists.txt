@@ -33,7 +33,7 @@ set(OgreProcedural_HOME "" CACHE PATH "Path to Ogre Procedural dir")
 set(YAMLCPP_DIR "" CACHE PATH "Path to yaml-cpp dir")
 
 # temp stuff until I figure this whole cmake thing out
-set(DT_DIR "/media/dt-usb/ducttape-engine/" CACHE PATH "Path to ducttape dir")
+set(DT_DIR "" CACHE PATH "Path to ducttape dir")
 
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/res/cmake")
 
@@ -64,7 +64,6 @@ find_package(YamlCpp REQUIRED)
 
 # Qt4 stuff
 set(QT_USE_QTSCRIPT TRUE)
-#set(QT_DONT_USE_QTGUI FALSE)
 find_package(Qt4 COMPONENTS QtCore QtGui REQUIRED)
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITONS})
@@ -79,8 +78,9 @@ else() # GCC/Mingw
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
 endif()
 
-include_directories(SYSTEM
+include_directories(${PROJECT_SOURCE_DIR}/build/
     ${PROJECT_SOURCE_DIR}/src/
+    ${CMAKE_CURRENT_BINARY_DIR}
     ${DT_DIR}/engine/src/
     ${Boost_INCLUDE_DIRS}
     ${SFML_INCLUDE_DIR}
@@ -107,8 +107,13 @@ file(GLOB_RECURSE editor_SOURCES src/*.cpp)
 file(GLOB_RECURSE editor_HEADERS src/*.hpp)
 qt4_wrap_cpp(editor_HEADERS_MOC ${editor_HEADERS})
 
+qt4_wrap_ui(editor_UI editor-ui/4editor.ui)
+qt4_add_resources(editor_RESOURCE res/resources.qrc)
+
 add_executable(ducttape-editor
     ${editor_SOURCES}
+    ${editor_RESOURCE}
+    ${editor_UI}
     ${editor_HEADERS_MOC}
 )
 

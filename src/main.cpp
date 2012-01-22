@@ -1,6 +1,8 @@
 #include "ducttapewidget.hpp"
 #include "State.hpp"
 
+#include "ui_4editor.h"
+
 #include <stdio.h>
 
 int main(int argc, char** argv) {
@@ -17,14 +19,12 @@ int main(int argc, char** argv) {
         QObject::connect(quit, SIGNAL(clicked()), game, SLOT(RequestShutdown()));
         QObject::connect(quit, SIGNAL(clicked()), qApp, SLOT(quit()));
         QVBoxLayout* layout = new QVBoxLayout;
-        //QPushButton* widget = new QPushButton;
         DucttapeWidget* widget = new DucttapeWidget(game, mainwidget);
         layout->addWidget(widget);
         layout->addWidget(quit);
         mainwidget->setLayout(layout);
         mainwidget->setMinimumSize(800, 600);
         mainwidget->show();
-        //widget->show();
 
         app.exec();
 
@@ -37,6 +37,19 @@ int main(int argc, char** argv) {
         while(gamen.IsRunning()) {
             gamen.Run();
         }
+        return 0;
+    } else if(qargv == "ui") {
+        QApplication app(argc, argv);
+        QMainWindow* mainwidget = new QMainWindow;
+        Ui::EditorWindow ui;
+        ui.setupUi(mainwidget);
+        QWidget* view3d = mainwidget->findChild<QWidget*>("viewport");
+        GameNonCont* game = new GameNonCont;
+        game->Init(new EditorState, argc, argv);
+        DucttapeWidget* dtwidget = new DucttapeWidget(game, view3d);
+        dtwidget->resize(view3d->size());
+        mainwidget->show();
+        app.exec();
         return 0;
     } else {
         dt::Game game;

@@ -1,0 +1,29 @@
+<RCC>
+  <qresource prefix="/">
+    <file>icons/edit.png</file>
+    <file>icons/duplicate48x48-icon.png</file>
+    <file>icons/info-icone-6655-32.png</file>
+    <file>icons/add-more-button-icone-3846-48.png</file>
+    <file>icons/open-icon.png</file>
+    <file>icons/undo-icone-4066-48.png</file>
+    <file>icons/add-more-button-icone-3846-48.png</file>
+    <file>icons/ccw-rotate-icone-8390-48.png</file>
+    <file>icons/cw-switch-icone-6219-48.png</file>
+    <file>icons/editcopy-icone-5634-48.png</file>
+    <file>icons/editcut-icone-7950-48.png</file>
+    <file>icons/editdelete-icone-6745-48.png</file>
+    <file>icons/editpaste-icone-6230-48.png</file>
+    <file>icons/filenew-icone-6978-48.png</file>
+    <file>icons/folder-window-icone-5695-48.png</file>
+    <file>icons/full-screen-window-icone-4401-48.png</file>
+    <file>icons/left-to-right-order-icone-4324-48.png</file>
+    <file>icons/new-window-icone-5167-48.png</file>
+    <file>icons/nofullscreen-window-icone-8982-48.png</file>
+    <file>icons/redo-icone-6016-48.png</file>
+    <file>icons/run-icone-8502-48.png</file>
+    <file>icons/save-file-icone-9357-48.png</file>
+  </qresource>
+  <qresource prefix="Textures">
+    <file>textures/small-crackle-bright.png</file>
+  </qresource>
+</RCC>

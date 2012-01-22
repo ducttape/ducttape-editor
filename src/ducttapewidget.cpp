@@ -7,12 +7,12 @@ DucttapeWidget::DucttapeWidget(GameNonCont* game, QWidget* parent) :
     mDisplay(nullptr) {
 
     //connect(mGame, SIGNAL(BeginFrame(double)), SLOT(updateQt(double)));
-    connect(qApp, SIGNAL(aboutToQuit()), mGame, SLOT(RequestShutdown()), Qt::DirectConnection);
+    connect(qApp, SIGNAL(aboutToQuit()), mGame, SLOT(ShutdownNow()), Qt::DirectConnection);
 
     mDisplay = dt::Root::GetInstance().GetDisplayManager();
 
     bool stealparent (parentWidget() != NULL);
-    QWidget *nativewin ((stealparent)? parentWidget () : this);
+    QWidget *nativewin ((stealparent)? window() : this);
 
     Ogre::NameValuePairList params;
     Ogre::String winhandle;
@@ -41,7 +41,7 @@ DucttapeWidget::DucttapeWidget(GameNonCont* game, QWidget* parent) :
     params["parentWindowHandle"] = winhandle;
     #endif
 
-    mDisplay->SetRenderWindowParam(params);
+    mDisplay->SetRenderWindowParams(&params);
     mDisplay->CreateOgreRoot();
     Ogre::RenderWindow* win_ = mDisplay->GetRenderWindow();
 
@@ -60,8 +60,9 @@ DucttapeWidget::DucttapeWidget(GameNonCont* game, QWidget* parent) :
     //}
 
     setAttribute( Qt::WA_PaintOnScreen, true );
+    setAttribute (Qt::WA_PaintOutsidePaintEvent);
     setAttribute( Qt::WA_NoBackground );
-    mTimer.start(2, this);
+    mTimer.start(30, this);
 }
 
 DucttapeWidget::~DucttapeWidget() {

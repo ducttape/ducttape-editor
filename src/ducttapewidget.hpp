@@ -37,23 +37,4 @@ private:
     QBasicTimer mTimer;
 };
 
-/*
-class DucttapeThread : public QThread {
-public:
-    DucttapeThread(int argc, char** argv);
-    void run();
-
-private:
-    DucttapeWidget* mDtWidget;
-    GameNonCont* mDt;
-    int mArg;
-    char** mArgv;
-};
-
-class DucttapeThread2 : public QThread {
-public:
-    void run();
-};
-*/
-
 #endif // DUCTTAPEWIDGET_HPP

@@ -12,6 +12,7 @@ public:
 public slots:
     void Init(dt::State* state, int argc, char** argv);
     void Run();
+    void ShutdownNow();
 
     bool IsShutdown();
 private:
